@@ -567,12 +567,12 @@ Disassembly of section .text:
   4011a4:       ba d0 32 60 00          mov    $0x6032d0,%edx
   4011a9:       eb cb                   jmp    401176 <phase_6+0x82>
   
-  4011ab:       48 8b 5c 24 20          mov    0x20(%rsp),%rbx
-  4011b0:       48 8d 44 24 28          lea    0x28(%rsp),%rax
-  4011b5:       48 8d 74 24 50          lea    0x50(%rsp),%rsi
-  4011ba:       48 89 d9                mov    %rbx,%rcx
-  4011bd:       48 8b 10                mov    (%rax),%rdx
-  4011c0:       48 89 51 08             mov    %rdx,0x8(%rcx)
+  4011ab:       48 8b 5c 24 20          mov    0x20(%rsp),%rbx // rbx=p1
+  4011b0:       48 8d 44 24 28          lea    0x28(%rsp),%rax // rax= rsp+0x28
+  4011b5:       48 8d 74 24 50          lea    0x50(%rsp),%rsi // rsi = rsp+0x50
+  4011ba:       48 89 d9                mov    %rbx,%rcx // rcx = p1
+  4011bd:       48 8b 10                mov    (%rax),%rdx // rdx = p2
+  4011c0:       48 89 51 08             mov    %rdx,0x8(%rcx)  p1 + 0x8 = p2
   4011c4:       48 83 c0 08             add    $0x8,%rax
   4011c8:       48 39 f0                cmp    %rsi,%rax
   4011cb:       74 05                   je     4011d2 <phase_6+0xde>
@@ -580,9 +580,10 @@ Disassembly of section .text:
   4011d0:       eb eb                   jmp    4011bd <phase_6+0xc9>
   4011d2:       48 c7 42 08 00 00 00    movq   $0x0,0x8(%rdx)
   4011d9:       00
-  4011da:       bd 05 00 00 00          mov    $0x5,%ebp
-  4011df:       48 8b 43 08             mov    0x8(%rbx),%rax
-  4011e3:       8b 00                   mov    (%rax),%eax
+  // 链表重新串联起来
+  4011da:       bd 05 00 00 00          mov    $0x5,%ebp // ebp = 0x5
+  4011df:       48 8b 43 08             mov    0x8(%rbx),%rax // rax = p2
+  4011e3:       8b 00                   mov    (%rax),%eax // 
   4011e5:       39 03                   cmp    %eax,(%rbx)
   4011e7:       7d 05                   jge    4011ee <phase_6+0xfa>
   4011e9:       e8 4c 02 00 00          callq  40143a <explode_bomb>
